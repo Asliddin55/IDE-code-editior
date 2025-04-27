@@ -62,7 +62,7 @@ function SnippetsPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-100 to-gray-300 text-transparent bg-clip-text mb-6"
           >
-            Yakunlash kerak bo'lgan va Tayyor bo'lgan codlar
+            Yakunlash kerak bolgan va Tayyor bolgan codlar
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -70,7 +70,7 @@ function SnippetsPage() {
             transition={{ delay: 0.2 }}
             className="text-lg text-gray-400 mb-8"
           >
-            Dasturlashni biz bilan o'rganing. Code yozishni yoki taxrir qilishni bizdan o'rganing.
+            Dasturlashni biz bilan organing. Code yozishni yoki taxrir qilishni bizdan organing.
           </motion.p>
         </div>
 
