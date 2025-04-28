@@ -1,4 +1,5 @@
 "use client";
+import * as monaco from 'monaco-editor';
 import { useCodeEditorStore } from "@/store/useCodeEditorStore";
 import { useEffect, useState } from "react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../_constants";
