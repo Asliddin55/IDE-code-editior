@@ -21,7 +21,9 @@ function EditorPanel() {
   useEffect(() => {
     const savedCode = localStorage.getItem(`editor-code-${language}`);
     const newCode = savedCode || LANGUAGE_CONFIG[language].defaultCode;
-    if (editor) editor.setValue(newCode);
+    if (editor) {
+      editor.setValue(newCode); // editor to'g'ri olingan bo'lishi kerak
+    }
   }, [language, editor]);
 
   useEffect(() => {
@@ -36,13 +38,17 @@ function EditorPanel() {
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value) localStorage.setItem(`editor-code-${language}`, value);
+    if (value !== undefined) localStorage.setItem(`editor-code-${language}`, value);
   };
 
   const handleFontSizeChange = (newSize: number) => {
     const size = Math.min(Math.max(newSize, 12), 24);
     setFontSize(size);
     localStorage.setItem("editor-font-size", size.toString());
+  };
+
+  const handleEditorMount = (editorInstance) => {
+    setEditor(editorInstance); // editorInstance ni saqlash
   };
 
   if (!mounted) return null;
@@ -81,68 +87,58 @@ function EditorPanel() {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover ={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#1e1e2e] ring-1 ring-white/5"
               onClick={handleRefresh}
-              className="p-2 bg-[#1e1e2e] hover:bg-[#2a2 a3a] rounded-lg ring-1 ring-white/5 transition-colors"
-              aria-label="Reset to default code"
             >
               <RotateCcwIcon className="size-4 text-gray-400" />
             </motion.button>
-
-            {/* Share Button */}
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#1e1e2e] ring-1 ring-white/5"
               onClick={() => setIsShareDialogOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg overflow-hidden bg-gradient-to-r
-               from-blue-500 to-blue-600 opacity-90 hover:opacity-100 transition-opacity"
             >
-              <ShareIcon className="size-4 text-white" />
-              <span className="text-sm font-medium text-white ">Ulashish</span>
+              <ShareIcon className="size-4 text-gray-400" />
             </motion.button>
           </div>
         </div>
 
-        {/* Editor  */}
-        <div className="relative group rounded-xl overflow-hidden ring-1 ring-white/[0.05]">
-          {clerk.loaded && (
-            <Editor
-              height="600px"
-              language={LANGUAGE_CONFIG[language].monacoLanguage}
-              onChange={handleEditorChange}
-              theme={theme}
-              beforeMount={defineMonacoThemes}
-              onMount={(editor) => setEditor(editor)}
-              options={{
-                minimap: { enabled: false },
-                fontSize,
-                automaticLayout: true,
-                scrollBeyondLastLine: false,
-                padding: { top: 16, bottom: 16 },
-                renderWhitespace: "selection",
-                fontFamily: '"Fira Code", "Cascadia Code", Consolas, monospace',
-                fontLigatures: true,
-                cursorBlinking: "smooth",
-                smoothScrolling: true,
-                contextmenu: true,
-                renderLineHighlight: "all",
-                lineHeight: 1.6,
-                letterSpacing: 0.5,
-                roundedSelection: true,
-                scrollbar: {
-                  verticalScrollbarSize: 8,
-                  horizontalScrollbarSize: 8,
-                },
-              }}
-            />
-          )}
-
-          {!clerk.loaded && <EditorPanelSkeleton />}
-        </div>
+        {/* Editor */}
+        <Editor
+          height="600px"
+          language={LANGUAGE_CONFIG[language].monacoLanguage}
+          onChange={handleEditorChange}
+          theme={theme}
+          beforeMount={defineMonacoThemes}
+          onMount={handleEditorMount}
+          options={{
+            minimap: { enabled: false },
+            fontSize,
+            automaticLayout: true,
+            scrollBeyondLastLine: false,
+            padding: { top: 16, bottom: 16 },
+            renderWhitespace: "selection",
+            fontFamily: '"Fira Code", "Cascadia Code", Consolas, monospace',
+            fontLigatures: true,
+            cursorBlinking: "smooth",
+            smoothScrolling: true,
+            contextmenu: true,
+            renderLineHighlight: "all",
+            lineHeight: 1.6,
+            letterSpacing: 0.5,
+            roundedSelection: true,
+            scrollbar: {
+              verticalScrollbarSize: 8,
+              horizontalScrollbarSize: 8,
+            },
+          }}
+        />
       </div>
       {isShareDialogOpen && <ShareSnippetDialog onClose={() => setIsShareDialogOpen(false)} />}
     </div>
   );
 }
+
 export default EditorPanel;
