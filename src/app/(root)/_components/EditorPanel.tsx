@@ -7,15 +7,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { RotateCcwIcon, ShareIcon, TypeIcon } from "lucide-react";
 import { useClerk } from "@clerk/nextjs";
-import { EditorPanelSkeleton } from "./EditorPanelSkeleton";
 import useMounted from "@/hooks/useMounted";
 import ShareSnippetDialog from "./ShareSnippetDialog";
 
 function EditorPanel() {
-  const clerk = useClerk();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const { language, theme, fontSize, editor, setFontSize, setEditor } = useCodeEditorStore();
-
   const mounted = useMounted();
 
   useEffect(() => {
@@ -34,7 +31,7 @@ function EditorPanel() {
   const handleRefresh = () => {
     const defaultCode = LANGUAGE_CONFIG[language].defaultCode;
     if (editor) editor.setValue(defaultCode);
-    localStorage.removeItem(`editor-code-${language}`);
+    localStorage.removeItem(`editor -code-${language}`);
   };
 
   const handleEditorChange = (value: string | undefined) => {
@@ -87,7 +84,7 @@ function EditorPanel() {
             </div>
 
             <motion.button
-              whileHover ={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#1e1e2e] ring-1 ring-white/5"
               onClick={handleRefresh}
